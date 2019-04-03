@@ -19,13 +19,20 @@ int main()
 	testArray.push_back(9);
 	testArray.push_back(14);
 
-	Sort::Sort* mysort;
+	std::vector<int> testArray2(testArray);
+	
 	Sort::MergeSort mergeSort;
 	Sort::HeapSort heapSort;
-	mysort = &heapSort;
-	mysort->showArray(mysort->sort(testArray));
-	mysort = &mergeSort;
-	mysort->showArray(mysort->sort(testArray));
+	Sort::SortContext mysort(&mergeSort);
+	std::cout << "original elements:\n";
+	mysort.showArray(testArray);
+	std::cout << "------------------------------\n";
+	mysort.showArray(mysort.sort(testArray));
+	std::cout << "------------------------------\n"<<"original elements:\n";
+	mysort.showArray(testArray2);
+	std::cout << "------------------------------\n";
+	mysort.modifySortContext(&heapSort);
+	mysort.showArray(mysort.sort(testArray));
 	std::system("pause");
 
 

@@ -1,38 +1,38 @@
 #pragma once
 #include<vector>
-//#define CPP17CODE
-
 
 
 namespace Sort{
-	class Sort
-	{
+	class StrategySortInterface {
 	public:
-		void showArray(std::vector<int> array);
-		virtual std::vector<int> sort(std::vector<int> array) = 0;
-		void static swap(int &d1, int &d2);
-
+		virtual void sortWay(std::vector<int> &arr) = 0;
 	};
 
-	class MergeSort :public Sort
-	{
-	public:
-		std::vector<int> sort(std::vector<int> array) override;
+	class SortContext{
 	private:
-		std::vector<int> dividedAndMerge(std::vector<int> array1, std::vector<int> array2);
-		std::vector<int> merge(std::vector<int> array1, std::vector<int> array2);
-#ifdef CPP17CODE
-		std::tuple<std::vector<int>, std::vector<int>> splitVectorIntoHalf(std::vector<int> arr);
-#else
-		void splitVectorIntoHalf(std::vector<int> inputArr, std::vector<int> &splitFirst, std::vector<int> &splitSecond);
-#endif // CPP17CODE
+		StrategySortInterface *_strategy;
+	public:
+		SortContext(StrategySortInterface *strategy) :_strategy(strategy) {};
+		std::vector<int> sort(std::vector<int> array);
+		void modifySortContext(StrategySortInterface *strategy);
+		void showArray(std::vector<int> array);
 	};
 
-	class HeapSort : public Sort {
+	class MergeSort :public StrategySortInterface {
 	public:
-		std::vector<int> sort(std::vector<int> array) override;
+		void sortWay(std::vector<int> &arr) override;
+	private:
+		void dividedAndMerge(std::vector<int> &arr, int front, int end);
+		void merge(std::vector<int> &arr, int front, int middle, int end);
+
+	};
+
+	class HeapSort : public StrategySortInterface {
 	private:
 		void doMaxHeap(std::vector<int> &array);
 		void modifyHeap(std::vector<int> &data, int root, int length);
+	public:
+		void sortWay(std::vector<int> &arr) override;
+	
 	};
 };

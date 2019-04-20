@@ -29,12 +29,6 @@
     <ClCompile Include="pch.cpp">
       <Filter>來源檔案</Filter>
     </ClCompile>
-    <ClCompile Include="BinarySearchTree.cpp">
-      <Filter>來源檔案</Filter>
-    </ClCompile>
-    <ClCompile Include="TreeNodeAndBinaryTree.cpp">
-      <Filter>來源檔案</Filter>
-    </ClCompile>
     <ClCompile Include="MainCpp.cpp">
       <Filter>來源檔案</Filter>
     </ClCompile>

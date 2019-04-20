@@ -1,12 +1,14 @@
 #ifndef TREENODEANDBINARYTREE
 #define TREENODEANDBINARYTREE
-
+#include<utility>
+#include <vector>
+#include"Traversal.h"
 
 namespace Tree {
 	template <class CType>
 	class TreeNode {
 	public:
-		TreeNode(int key, CType data, bool isNodeHaveColor) :leftchild(0), rightchild(0), _key(key), _data(data), _isNodeHaveColor(isNodeHaveColor), _color(true) {};
+		TreeNode(int key, CType data, bool isNodeHaveColor) :parent(nullptr),leftchild(nullptr), rightchild(nullptr), _key(key), _data(data), _isNodeHaveColor(isNodeHaveColor), _color(true) {};
 		int getKey();
 		CType getElement();
 		TreeNode* getLeftchild();
@@ -15,7 +17,7 @@ namespace Tree {
 		void setRightchild(TreeNode<CType> * node);
 		bool getColor();
 		void setColor(bool color);
-		TreeNode* parient;
+		TreeNode* parent;
 	private:
 		TreeNode* leftchild;
 		TreeNode* rightchild;
@@ -28,26 +30,26 @@ namespace Tree {
 	template <class CType>
 	class BinaryTree {
 	public:
-		virtual void add(int key, CType data) = 0;
+		virtual ~BinaryTree() = default;
+		virtual void add(int key, CType data) = 0;   //OK
 		void showAllInOrder();
-		CType search(int key);
-		virtual bool deleteObject(int key) = 0;
-		TreeNode<CType>* searchNode(int key);
+		CType search(int key);// log(n)             //OK
+		virtual bool deleteObject(int key) = 0;    //OK
+		TreeNode<CType>* searchNode(int key);      //OK
 		void showTreeStruct();
-		void testSuccesssor();
-		static const int showSpace = 3;
+		std::vector<std::pair<int, CType>> getAllKeyAndData(Traversal<CType>& traversalWay);
+		
 		
 	protected:
+		static const int showSpace = 3;
 		TreeNode<CType>* root;
-		TreeNode<CType>* leftSuccessor(TreeNode<CType> *current);
-		TreeNode<CType>* rightSuccessor(TreeNode<CType> *current);
-		
-
-	private:
-		void print2DTree(TreeNode<CType>* root, int space);
-		void inOrder(TreeNode<CType> *current);	
+		TreeNode<CType>* leftSuccessor(TreeNode<CType>* current);
+		TreeNode<CType>* rightSuccessor(TreeNode<CType>* current);
+		void deleteAllNode(TreeNode<CType>* treeNode);
 
 	};
+
+
 
 	template <class CType>
 	int TreeNode<CType>::getKey() {
@@ -93,50 +95,40 @@ namespace Tree {
 	}
 	template <class CType>
 	void BinaryTree<CType>::showAllInOrder() {
-		inOrder(this->root);
+		InOrder<CType> inOrder;
+		std::vector<std::pair<int, CType>> data;
+		inOrder.traversal(this->root, data);
+		for (unsigned int i = 0;i < data.size(); i++) {
+			std::cout << "key is " << data[i].first << " value is " << search(data[i].second) << std::endl;
+		}
 		std::cout << "above is all" << std::endl;
 
 	}
-	template <class CType>
-	void BinaryTree<CType>::inOrder(TreeNode<CType> *current) {
-		if (current != nullptr) {
-			inOrder(current->getLeftchild());
-			std::cout << "key is:" << current->getKey() << "  value is:" << current->getElement() << std::endl;
-			inOrder(current->getRightchild());
-		}
-	}
+	
 	template <class CType>
 	CType BinaryTree<CType>::search(int key) {
-		TreeNode *theNode = searchNode(key);
+		TreeNode<CType> *theNode = searchNode(key);
 
 		if (theNode != nullptr) {
 			return theNode->getElement();
 		}
-		return nullptr;
+		//throw "there is no elements";
+		return -1;
 	}
 	template <class CType>
 	void BinaryTree<CType>::showTreeStruct() {
-		print2DTree(root, 0);
+		
+		Print2DTree<CType> print2DTree(BinaryTree::showSpace);
+		std::vector<std::pair<int, CType>> data;
+		print2DTree.traversal(root, data);
 	}
-	template <class CType>
-	void BinaryTree<CType>::print2DTree(TreeNode<CType>* root, int space) {
-		if (root == nullptr) {
-			return;
-		}
-		space += BinaryTree::showSpace;
-		print2DTree(root->getLeftchild(), space);
-		for (int i = 0; i < space; i++) {
-			std::cout << " ";
-		}
-		std::cout << root->getKey() << std::endl;
-		print2DTree(root->getRightchild(), space);
-	}
+	
 	template <class CType>
 	TreeNode<CType>* BinaryTree<CType>::searchNode(int key) {
 		TreeNode<CType> *current = root;
 
 		while (current != nullptr && key != current->getKey()) {
-			if (key < current->getKey()) {//go left 
+			if (key > current->getKey()) {//go left 
 				current = current->getLeftchild();
 			}
 			else {
@@ -180,15 +172,20 @@ namespace Tree {
 		return successor;
 	}
 	template <class CType>
-	void BinaryTree<CType>::testSuccesssor() {
-		print2DTree(root, 0);
-		TreeNode* successor = leftSuccessor(root);
-		std::cout << "left successor is " << successor->getKey() << std::endl;
-		successor = rightSuccessor(root);
-		std::cout << "right successor is " << successor->getKey() << std::endl;
-		std::cout << "root index is " << root->getKey() << std::endl;
+	void BinaryTree<CType>::deleteAllNode(TreeNode<CType>* treeNode) {
+		if (treeNode != nullptr)
+		{
+			deleteAllNode(treeNode->getLeftchild());
+			deleteAllNode(treeNode->getRightchild());
+			delete treeNode;
+		}
 	}
-	
+	template <class CType>
+	std::vector<std::pair<int, CType>> BinaryTree<CType>::getAllKeyAndData(Traversal<CType>& traversalWay) {
+		std::vector<std::pair<int, CType>> data;
+		traversalWay.traversal(root, data);
+		return data;
+	}
 }
 
 #endif 

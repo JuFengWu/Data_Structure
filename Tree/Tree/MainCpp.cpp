@@ -48,11 +48,7 @@ int main()
 		}
 		std::cout << std::endl;
 
-		//Tree::BinaryTree<char> bst;
 		Tree::BinarySearchTree<char> bst(binarySearchTree);
-		//bst = std::move(binarySearchTree);
-
-		//TODO: check rule of five in base 
 
 		bst.showTreeStruct();
 		std::cout << "after show tree struct" << std::endl;
@@ -61,7 +57,7 @@ int main()
 		std::cout << "after assign"<<std::endl;
 		
 	}
-	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);// to check memory leak
 	std::system("pause");
 	
 }

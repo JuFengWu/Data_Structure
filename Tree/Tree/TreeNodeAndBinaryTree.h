@@ -42,7 +42,7 @@ namespace Tree {
 		
 	protected:
 		static const int showSpace = 3;
-		TreeNode<CType>* root;
+		TreeNode<CType>* root = nullptr;
 		TreeNode<CType>* leftSuccessor(TreeNode<CType>* current);
 		TreeNode<CType>* rightSuccessor(TreeNode<CType>* current);
 		void deleteAllNode(TreeNode<CType>* treeNode);

@@ -13,8 +13,7 @@ namespace Tree {
 		void add(int key, CType data) override;
 		bool deleteObject(int key)  override;
 		~BinarySearchTree();
-	private:
-		
+	private:	
 		void modifyParitenNode(TreeNode<CType>* theNode, TreeNode<CType>* thePickNode);
 		void replaceAndDeleteNode(TreeNode<CType>* thePlaceNode, TreeNode<CType>* thePickNode, bool isLeft);
 	};
@@ -56,7 +55,6 @@ namespace Tree {
 		std::cout << "this is move operator =" << std::endl;
 		this->root = other.root;
 		other.root = nullptr;
-
 		return *this;
 	}
 	template <class CType>
@@ -149,7 +147,6 @@ namespace Tree {
 			theNode->getLeftchild()->parent = theNode->parent;
 			
 			delete theNode;
-
 		}
 		return true;
 	}

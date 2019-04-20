@@ -27,7 +27,7 @@ namespace Tree {
 		}
 		
 	protected:
-		TreeNode<CType>* current;
+		TreeNode<CType>* current = nullptr;
 		virtual void beforeTraversal(std::vector < std::pair<int, CType>>& data) {
 			return;
 		}
